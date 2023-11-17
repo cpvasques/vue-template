@@ -1,0 +1,32 @@
+.header {
+  background: #fff;
+  border-bottom: 1px solid #cedcea;
+
+  position: relative;
+  z-index: 998;
+
+  &-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0px 1.5rem 0px 1.25rem;
+
+    height: 3.125rem;
+    width: 100%;
+
+    &__title {
+      &--logo {
+        width: 8.4375rem;
+      }
+    }
+    &__action {
+      display: flex;
+      align-items: center;
+      &--icon {
+        margin: 0px 0.5rem;
+      }
+    }
+  }
+}

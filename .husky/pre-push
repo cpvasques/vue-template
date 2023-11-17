@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Executando npm run lint:check..."
+echo "Se surgirem erros ou warnings, por favor, corrija a lista abaixo antes de realizar o push."
+
+npm run lint:check
