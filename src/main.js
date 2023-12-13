@@ -5,10 +5,7 @@ import router from "./router";
 import pinia from "./config/pinia";
 
 //APP Core styles
-import "./scss/reset.scss";
-import "./scss/customToast.scss";
-import "./scss/animations.scss";
-import "./scss/elements.scss";
+import "./assets/styles/tailwind.css";
 
 //Import plugins
 import useToastPlugin from "./config/toast";
