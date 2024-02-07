@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import SpinnerIcon from "./SvgIcons/SpinnerIcon.vue";
 
 export default {
@@ -32,13 +33,14 @@ export default {
       default: "#3a7ece",
     },
   },
-  computed: {
-    containerClass() {
-      return {
-        "flex items-center justify-center min-h-[75vh]": this.fullScreen,
-        "mt-1": this.isButton,
-      };
-    },
+  setup(props) {
+    // COMPUTED
+    const containerClass = computed(() => ({
+      "flex items-center justify-center min-h-[75vh]": props.fullScreen,
+      "mt-1": props.isButton,
+    }));
+
+    return { containerClass };
   },
 };
 </script>

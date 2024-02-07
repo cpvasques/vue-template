@@ -3,7 +3,7 @@
     :id="id"
     :class="[
       { alert: hasAlert },
-      { disabled: hasRequiredFields || isLoading },
+      { disabled: disabled || isLoading },
       buttonClass,
     ]"
     @click="emitMethod"
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import Loader from "./Loader.vue";
 
 export default {
@@ -42,39 +43,40 @@ export default {
       type: Boolean,
       default: false,
     },
-    hasRequiredFields: {
+    disabled: {
       type: Boolean,
       default: false,
     },
   },
   emits: ["emitMethod"],
+  setup(props, { emit }) {
+    // METHODS
+    const emitMethod = () => {
+      emit("emitMethod");
+    };
 
-  computed: {
-    buttonClass() {
+    const colorMap = {
+      blue: "bg-blue-500 hover:bg-blue-700",
+      red: "bg-red-500 hover:bg-red-700",
+      green: "bg-green-500 hover:bg-green-700",
+      default: "bg-gray-500 hover:bg-gray-700",
+    };
+
+    // COMPUTED
+    const buttonClass = computed(() => {
       const baseClasses =
         "text-white font-bold py-2 px-4 rounded transition-all duration-400";
-      const colorClasses = this.colorMap[this.color] || this.colorMap.default;
-      const alertClasses = this.hasAlert ? "bg-red-500 hover:bg-red-700" : "";
+      const colorClasses = colorMap[props.color] || colorMap.default;
+      const alertClasses = props.hasAlert ? "bg-red-500 hover:bg-red-700" : "";
       const disabledClasses =
-        this.hasRequiredFields || this.isLoading
-          ? "opacity-50 cursor-not-allowed"
+        props.disabled || props.isLoading
+          ? "opacity-50 cursor-not-allowed disabled:pointer-events-none"
           : "";
 
       return `${baseClasses} ${colorClasses} ${alertClasses} ${disabledClasses}`;
-    },
-    colorMap() {
-      return {
-        blue: "bg-blue-500 hover:bg-blue-700",
-        red: "bg-red-500 hover:bg-red-700",
-        green: "bg-green-500 hover:bg-green-700",
-        default: "bg-gray-500 hover:bg-gray-700",
-      };
-    },
-  },
-  methods: {
-    emitMethod() {
-      this.$emit("emitMethod");
-    },
+    });
+
+    return { emitMethod, buttonClass };
   },
 };
 </script>

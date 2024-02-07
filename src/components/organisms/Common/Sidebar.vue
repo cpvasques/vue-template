@@ -6,15 +6,15 @@
       'w-0': !isWeb && !isExpanded,
       'w-3/5': !isWeb && isExpanded,
     }"
-    class="relative overflow-visible bg-white min-h-screen shadow-xl transition-all duration-300 ease-in-out overflow-hidden"
+    class="relative min-h-screen overflow-hidden overflow-visible bg-white shadow-xl transition-all duration-300 ease-in-out"
   >
-    <div class="flex-grow relative pt-12">
+    <div class="relative flex-grow pt-12">
       <ul>
         <li v-for="route in navItems" :key="route.menuLabel" class="group">
           <router-link
             v-show="isWeb || isExpanded"
             :to="route.path"
-            class="flex items-center h-12 text-gray-800 hover:bg-gray-200 rounded-tr rounded-br pl-4 transition-all duration-200"
+            class="flex h-12 items-center rounded-br rounded-tr pl-4 text-gray-800 transition-all duration-200 hover:bg-gray-200"
             :class="{
               'justify-between': isExpanded,
             }"
@@ -23,7 +23,7 @@
             <span class="text-lg">
               <SidebarIcons :nav-name="route.name" />
             </span>
-            <span v-if="isExpanded" class="flex-1 ml-4">
+            <span v-if="isExpanded" class="ml-4 flex-1">
               {{ route.menuLabel }}
             </span>
           </router-link>
@@ -41,31 +41,37 @@
     </div>
   </nav>
 </template>
-<script>
-import { routes } from "@/router";
 
+<script>
+import { ref, onMounted } from "vue";
+import { routes } from "@/router";
 import isWebMixin from "@/mixins/isWebMixin";
 import SidebarArrow from "@/components/atoms/SvgIcons/SidebarArrow.vue";
 import SidebarIcons from "@/components/molecules/SidebarIcons.vue";
 
 export default {
-  name: "Sidebar",
   components: {
     SidebarArrow,
     SidebarIcons,
   },
   mixins: [isWebMixin],
-  data: () => ({
-    navItems: [],
-    isExpanded: false,
-  }),
-  created() {
-    this.navItems = routes[0].children;
-  },
-  methods: {
-    toggleExpand() {
-      this.isExpanded = !this.isExpanded;
-    },
+  setup() {
+    const isExpanded = ref(false);
+    const navItems = ref([]);
+
+    onMounted(() => {
+      navItems.value = routes[0].children;
+    });
+
+    const toggleExpand = () => {
+      isExpanded.value = !isExpanded.value;
+    };
+
+    return {
+      isExpanded,
+      navItems,
+      toggleExpand,
+    };
   },
 };
 </script>

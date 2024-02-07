@@ -1,5 +1,5 @@
 <template>
-  <form class="space-y-6 w-[80%] sm:w-[40%]" @submit.prevent="onSubmit">
+  <form class="w-[80%] space-y-6 sm:w-[40%]" @submit.prevent="onSubmit">
     <FormField
       id="email"
       v-model="email"
@@ -22,15 +22,17 @@
       <Button
         id="login-btn"
         type="submit"
-        :disabled="hasRequiredFields || isLoading"
-        :is-loading="isLoading"
-        :label="isLoading ? '' : 'Entrar'"
+        :disabled="hasRequiredFields"
+        :is-loading="loginState.isLoading"
+        :label="loginState.isLoading ? '' : 'Entrar'"
       />
     </div>
   </form>
 </template>
 
 <script>
+import { ref, computed, watch } from "vue";
+import { useLogin } from "@/composables/useLogin";
 import FormField from "@/components/molecules/FormField.vue";
 import Button from "@/components/atoms/Button.vue";
 import Checkbox from "@/components/atoms/Checkbox.vue";
@@ -41,36 +43,50 @@ export default {
     Button,
     Checkbox,
   },
-  data: () => ({
-    email: "",
-    password: "",
-    rememberMe: false,
-    isLoading: false,
-    hasRequiredFields: false,
-    showRequiredFields: false,
-  }),
-  watch: {
-    email() {
-      this.showRequiredFields = false;
-    },
-    password() {
-      this.showRequiredFields = false;
-    },
-  },
-  methods: {
-    onSubmit() {
-      this.isLoading = true;
+  setup() {
+    // DATA
+    const email = ref("");
+    const password = ref("");
+    const rememberMe = ref(false);
+    const showRequiredFields = ref(false);
+    const { doLogin, isLoading, error } = useLogin();
 
-      if (!this.email || !this.password) {
-        this.showRequiredFields = true;
-        this.isLoading = false;
+    // COMPUTED
+    const hasRequiredFields = computed(() => !email.value || !password.value);
+
+    // WATCHER
+    watch([email, password], () => {
+      showRequiredFields.value = false;
+    });
+
+    // METHODS
+    const onSubmit = () => {
+      if (hasRequiredFields.value) {
+        showRequiredFields.value = true;
         return;
       }
 
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
-    },
+      doLogin({
+        email: email.value,
+        password: password.value,
+        stayConnected: rememberMe.value,
+      });
+    };
+
+    const loginState = {
+      isLoading,
+      error,
+    };
+
+    return {
+      email,
+      password,
+      rememberMe,
+      onSubmit,
+      showRequiredFields,
+      loginState,
+      hasRequiredFields,
+    };
   },
 };
 </script>

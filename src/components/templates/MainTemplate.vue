@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="flex min-h-screen flex-col">
     <Header @hamburger-click="toggleExpand" />
-    <div class="flex flex-grow min-h-0">
-      <Sidebar ref="sidebar" />
-      <main class="flex-grow py-4 px-8">
+    <div class="flex min-h-0 flex-grow">
+      <Sidebar ref="sidebarRef" />
+      <main class="flex-grow px-8 py-4">
         <router-view></router-view>
       </main>
     </div>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import Header from "@/components/organisms/Common/Header.vue";
 import Sidebar from "@/components/organisms/Common/Sidebar.vue";
 
@@ -20,10 +21,19 @@ export default {
     Header,
     Sidebar,
   },
-  methods: {
-    toggleExpand() {
-      this.$refs.sidebar.toggleExpand();
-    },
+  setup() {
+    const sidebarRef = ref(null);
+
+    const toggleExpand = () => {
+      if (sidebarRef.value) {
+        sidebarRef.value.toggleExpand();
+      }
+    };
+
+    return {
+      sidebarRef,
+      toggleExpand,
+    };
   },
 };
 </script>

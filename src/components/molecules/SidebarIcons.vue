@@ -1,5 +1,5 @@
 <template>
-  <ControlPanel v-if="navName == 'Home'" class="min-w-4.5 min-h-4.5" />
+  <ControlPanel v-if="navName == 'Home'" class="min-h-4.5 min-w-4.5" />
 </template>
 
 <script>

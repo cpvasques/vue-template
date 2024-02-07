@@ -4,7 +4,7 @@
     :type="type"
     :placeholder="placeholder"
     :value="value"
-    class="bg-white text-lg w-full border-b border-gray-200 p-2 focus:border-b-2 focus:border-blue-600 transition-all duration-400 rounded outline-none"
+    class="duration-400 w-full rounded border-b border-gray-200 bg-white p-2 text-lg outline-none transition-all focus:border-b-2 focus:border-blue-600"
     :class="{ 'border-red-600 focus:border-red-600': isRequired }"
     @input="$emit('update:value', $event.target.value)"
   />
