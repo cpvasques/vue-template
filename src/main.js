@@ -12,6 +12,9 @@ import useVueQueryPlugin from "./config/vueQuery";
 import useToastPlugin from "./config/toast";
 import useMomentTimezonePlugin from "./config/momentTimezone";
 
+//Directives
+import clickOutside from "./directives/clickOutside.js";
+
 const app = createApp(App);
 
 //Use plugins
@@ -21,5 +24,6 @@ useMomentTimezonePlugin(app);
 
 app.use(router);
 app.use(pinia);
+app.directive("click-outside", clickOutside);
 
 app.mount("#app");
