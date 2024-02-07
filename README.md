@@ -10,7 +10,7 @@
 
 ## Requisitos
 
-- [Node.js](https://nodejs.org/en/download/) na versão 18.17.0
+- [Node.js](https://nodejs.org/en/download/) na versão 20.11.0
 
 ## 🚀 Desenvolvendo
 
