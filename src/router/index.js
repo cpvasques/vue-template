@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-//Structure
-import Structure from "../views/Structure/Structure.vue";
+//Templates
+import MainTemplate from "@/components/templates/MainTemplate.vue";
 
 //Pages
-import Login from "../views/modules/Login/Login.vue";
-import Home from "../views/modules/Home/Home.vue";
+import Login from "@/pages/Login.vue";
+import Home from "@/pages/Home.vue";
 
 //Middlewares
 import { keepConnected } from "@/middlewares/keepConnected";
@@ -13,8 +13,8 @@ import { keepConnected } from "@/middlewares/keepConnected";
 export const routes = [
   {
     path: "/main",
-    name: "Structure",
-    component: Structure,
+    name: "MainTemplate",
+    component: MainTemplate,
     children: [
       {
         path: "/main/home",
@@ -25,14 +25,14 @@ export const routes = [
     ],
   },
   {
-    path: "/login",
+    path: "/",
     name: "Login",
     component: Login,
     beforeEnter: keepConnected,
   },
   {
     path: "/:catchAll(.*)",
-    redirect: "/login",
+    redirect: "/",
   },
 ];
 

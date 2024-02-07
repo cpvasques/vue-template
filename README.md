@@ -6,6 +6,7 @@
 - [Vue.js](https://vuejs.org/)
 - [Vue Router](https://router.vuejs.org/)
 - [Pinia](https://pinia.vuejs.org/)
+- [Tailwind](https://tailwindcss.com/docs/installation)
 
 ## Requisitos
 
