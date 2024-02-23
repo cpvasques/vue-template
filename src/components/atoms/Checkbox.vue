@@ -9,10 +9,10 @@
     />
     <label
       :for="id"
-      class="cursor-pointer text-blue-600 font-semibold text-sm flex items-center"
+      class="flex cursor-pointer items-center text-sm font-semibold text-blue-600"
     >
       <span
-        class="h-4 w-4 mr-2 border-2 border-blue-600 rounded-sm bg-white flex items-center justify-center"
+        class="mr-2 flex h-4 w-4 items-center justify-center rounded-sm border-2 border-blue-600 bg-white"
         :class="{ 'bg-blue-600': modelValue }"
       >
         <!-- Checkmark icon (when checkbox is checked) -->

@@ -1,5 +1,5 @@
 <template>
-  <label :for="id" class="text-lg font-normal leading-6">
+  <label :for="id" class="leading-6">
     <slot></slot>
   </label>
 </template>

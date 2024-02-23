@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      colors: {
+        "friboi-red": "#FF2B44",
+      },
       minWidth: {
         4.5: "1.125rem",
       },

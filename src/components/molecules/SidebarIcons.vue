@@ -1,9 +1,9 @@
 <template>
-  <ControlPanel v-if="navName == 'Home'" class="min-w-4.5 min-h-4.5" />
+  <ControlPanel v-if="navName == 'Home'" class="min-h-4.5 min-w-4.5" />
 </template>
 
 <script>
-import ControlPanel from "@/components/atoms/SvgIcons/SidebarIcons/ControlPanel.vue";
+import ControlPanel from "@/components/atoms/icons/sidebar/ControlPanel.vue";
 
 export default {
   name: "SidebarIcons",

@@ -1,21 +1,17 @@
 <template>
-  <div class="relative w-full mb-4">
+  <div class="relative mb-2 w-full">
     <Label
       :id="id"
       :for="id"
-      :class="[
-        'absolute left-2 top-2 transition-all duration-300',
-        { 'text-gray-400 text-sm -translate-y-6': inputFocused || modelValue },
-        { 'text-lg': !inputFocused && !modelValue },
-        { 'text-red-500': isRequired },
-      ]"
+      class="text-sm font-bold"
+      :class="[{ 'text-red-500 ': isRequired }]"
     >
-      {{ placeholder }}
+      {{ label }}
     </Label>
     <InputField
       :id="id"
       :type="!isPassword ? type : passwordType"
-      placeholder=""
+      :placeholder="placeholder"
       :is-required="isRequired"
       :value="modelValue"
       @update:value="emitValue"
@@ -24,15 +20,15 @@
     />
     <div
       v-if="isPassword"
-      class="absolute top-3 right-2.5 cursor-pointer"
+      class="absolute right-2.5 top-8 cursor-pointer"
       @click="handleShowPassword"
     >
-      <EyeIcon v-if="passwordType === 'text'" :color="iconColor" />
-      <ClosedEyeIcon v-else :color="iconColor" />
+      <ClosedEyeIcon v-if="passwordType === 'text'" :color="iconColor" />
+      <EyeIcon v-else :color="iconColor" />
     </div>
-    <div v-if="errorMessage && showErrorMessage" class="flex items-center mt-1">
+    <div v-if="errorMessage && showErrorMessage" class="mt-1 flex items-center">
       <WarningIcon />
-      <span class="text-red-500 text-sm font-normal leading-4 ml-1">
+      <span class="ml-1 text-sm font-normal leading-4 text-red-500">
         {{ errorMessage }}
       </span>
     </div>
@@ -42,9 +38,9 @@
 <script>
 import Label from "../atoms/Label.vue";
 import InputField from "../atoms/InputField.vue";
-import EyeIcon from "../atoms/SvgIcons/EyeIcon.vue";
-import ClosedEyeIcon from "../atoms/SvgIcons/ClosedEyeIcon.vue";
-import WarningIcon from "../atoms/SvgIcons/WarningIcon.vue";
+import EyeIcon from "../atoms/icons/EyeIcon.vue";
+import ClosedEyeIcon from "../atoms/icons/ClosedEyeIcon.vue";
+import WarningIcon from "../atoms/icons/WarningIcon.vue";
 
 export default {
   name: "FormField",
@@ -121,7 +117,7 @@ export default {
       ];
     },
     iconColor() {
-      return this.isRequired ? "#e3403b" : "#A9A9A9";
+      return this.isRequired ? "#e3403b" : "#000";
     },
   },
   methods: {

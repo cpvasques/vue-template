@@ -4,8 +4,10 @@
     :type="type"
     :placeholder="placeholder"
     :value="value"
-    class="bg-white text-lg w-full border-b border-gray-200 p-2 focus:border-b-2 focus:border-blue-600 transition-all duration-400 rounded outline-none"
-    :class="{ 'border-red-600 focus:border-red-600': isRequired }"
+    class="duration-400 h-10 w-full rounded border bg-white p-2 text-sm font-normal outline-none transition-all focus:border-black"
+    :class="[
+      isRequired ? 'border-red-600 focus:border-red-600' : 'border-gray-300',
+    ]"
     @input="$emit('update:value', $event.target.value)"
   />
 </template>
