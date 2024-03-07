@@ -35,9 +35,9 @@
             id="login-btn"
             type="submit"
             class="w-full sm:w-[83px]"
-            :disabled="hasRequiredFields || isLoading"
-            :is-loading="isLoading"
-            :label="isLoading ? '' : 'Entrar'"
+            :disabled="hasRequiredFields || isLoadingLogin"
+            :is-loading="isLoadingLogin"
+            :label="isLoadingLogin ? '' : 'Entrar'"
           />
         </div>
       </form>
@@ -49,6 +49,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
 import Card from "@/components/molecules/Card.vue";
 import Header from "@/components/molecules/login/Header.vue";
 import FormField from "@/components/molecules/FormField.vue";
@@ -69,10 +72,12 @@ export default {
     email: "",
     password: "",
     rememberMe: false,
-    isLoading: false,
     hasRequiredFields: false,
     showRequiredFields: false,
   }),
+  computed: {
+    ...mapState(useAuthStore, ["isLoadingLogin"]),
+  },
   watch: {
     email() {
       this.showRequiredFields = false;
@@ -82,18 +87,27 @@ export default {
     },
   },
   methods: {
+    ...mapActions(useAuthStore, ["loginRequest"]),
     onSubmit() {
-      this.isLoading = true;
-
       if (!this.email || !this.password) {
         this.showRequiredFields = true;
-        this.isLoading = false;
         return;
       }
 
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+      const body = {
+        login: this.email,
+        password: this.password,
+      };
+
+      this.loginRequest(body, this.rememberMe).then((res) => {
+        const { status } = res;
+
+        if (status === 200) {
+          this.$router.push({
+            name: "Home",
+          });
+        }
+      });
     },
   },
 };

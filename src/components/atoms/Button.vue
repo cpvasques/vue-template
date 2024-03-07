@@ -52,7 +52,7 @@ export default {
   computed: {
     buttonClass() {
       const baseClasses =
-        "text-white font-bold py-2 px-4 rounded transition-all duration-400";
+        "flex justify-center align-center text-white font-bold py-2 px-4 rounded transition-all duration-400";
       const colorClasses = this.colorMap[this.color] || this.colorMap.default;
       const alertClasses = this.hasAlert ? "bg-red-500 hover:bg-red-700" : "";
       const disabledClasses =
