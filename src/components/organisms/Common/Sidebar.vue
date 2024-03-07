@@ -46,7 +46,7 @@
 import { ref, onMounted } from "vue";
 import { routes } from "@/router";
 import isWebMixin from "@/mixins/isWebMixin";
-import SidebarArrow from "@/components/atoms/SvgIcons/SidebarArrow.vue";
+import SidebarArrow from "@/components/atoms/icons/SidebarArrow.vue";
 import SidebarIcons from "@/components/molecules/SidebarIcons.vue";
 
 export default {

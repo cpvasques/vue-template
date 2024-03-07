@@ -1,16 +1,17 @@
 <template>
-  <div class="relative mb-4 w-full">
+  <div class="relative mb-2 w-full">
     <Label
       :id="id"
       :for="id"
-      :class="['transition-all duration-300', { 'text-red-500': isRequired }]"
+      class="text-sm font-bold"
+      :class="[{ 'text-red-500 ': isRequired }]"
     >
-      {{ placeholder }}
+      {{ label }}
     </Label>
     <InputField
       :id="id"
       :type="!isPassword ? type : passwordType"
-      placeholder=""
+      :placeholder="placeholder"
       :is-required="isRequired"
       :value="modelValue"
       @update:value="emitValue"
@@ -19,11 +20,11 @@
     />
     <div
       v-if="isPassword"
-      class="absolute right-2.5 top-9 cursor-pointer"
+      class="absolute right-2.5 top-8 cursor-pointer"
       @click="handleShowPassword"
     >
-      <EyeIcon v-if="passwordType === 'text'" :color="iconColor" />
-      <ClosedEyeIcon v-else :color="iconColor" />
+      <ClosedEyeIcon v-if="passwordType === 'text'" :color="iconColor" />
+      <EyeIcon v-else :color="iconColor" />
     </div>
     <div v-if="errorMessage && showErrorMessage" class="mt-1 flex items-center">
       <WarningIcon />
@@ -38,9 +39,9 @@
 import { ref, computed } from "vue";
 import Label from "../atoms/Label.vue";
 import InputField from "../atoms/InputField.vue";
-import EyeIcon from "../atoms/SvgIcons/EyeIcon.vue";
-import ClosedEyeIcon from "../atoms/SvgIcons/ClosedEyeIcon.vue";
-import WarningIcon from "../atoms/SvgIcons/WarningIcon.vue";
+import EyeIcon from "../atoms/icons/EyeIcon.vue";
+import ClosedEyeIcon from "../atoms/icons/ClosedEyeIcon.vue";
+import WarningIcon from "../atoms/icons/WarningIcon.vue";
 
 export default {
   name: "FormField",

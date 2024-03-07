@@ -6,7 +6,7 @@
 
 <script>
 import AuthTemplate from "@/components/templates/AuthTemplate.vue";
-import LoginForm from "@/components/organisms/Login/LoginForm.vue";
+import LoginForm from "@/components/organisms/login/LoginForm.vue";
 
 export default {
   name: "Login",

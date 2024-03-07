@@ -12,8 +12,8 @@
 
 <script>
 import { ref } from "vue";
-import Header from "@/components/organisms/Common/Header.vue";
-import Sidebar from "@/components/organisms/Common/Sidebar.vue";
+import Header from "@/components/organisms/common//Header.vue";
+import Sidebar from "@/components/organisms/common//Sidebar.vue";
 
 export default {
   name: "MainTemplate",

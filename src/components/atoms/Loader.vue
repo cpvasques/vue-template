@@ -10,7 +10,7 @@
 
 <script>
 import { computed } from "vue";
-import SpinnerIcon from "./SvgIcons/SpinnerIcon.vue";
+import SpinnerIcon from "./icons/SpinnerIcon.vue";
 
 export default {
   name: "Loader",

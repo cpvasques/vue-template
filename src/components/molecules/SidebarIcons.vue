@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ControlPanel from "@/components/atoms/SvgIcons/SidebarIcons/ControlPanel.vue";
+import ControlPanel from "@/components/atoms/icons/sidebar/ControlPanel.vue";
 
 export default {
   name: "SidebarIcons",

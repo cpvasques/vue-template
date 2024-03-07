@@ -1,4 +1,4 @@
-export const addBearer = (config) => {
+export const handleBearerConfig = (config) => {
   const token =
     localStorage.getItem("token") || sessionStorage.getItem("token");
 
@@ -9,6 +9,6 @@ export const addBearer = (config) => {
   return config;
 };
 
-export const addBearerError = (error) => {
+export const handleBearerError = (error) => {
   return Promise.reject(error);
 };
