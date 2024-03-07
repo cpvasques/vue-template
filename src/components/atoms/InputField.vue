@@ -8,6 +8,7 @@
     :class="[
       isRequired ? 'border-red-600 focus:border-red-600' : 'border-gray-300',
     ]"
+    autocomplete="off"
     @input="$emit('update:value', $event.target.value)"
   />
 </template>
