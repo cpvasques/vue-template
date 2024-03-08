@@ -37,11 +37,11 @@
 
 <script>
 import { ref, computed } from "vue";
-import Label from "../atoms/Label.vue";
-import InputField from "../atoms/InputField.vue";
-import EyeIcon from "../atoms/icons/EyeIcon.vue";
-import ClosedEyeIcon from "../atoms/icons/ClosedEyeIcon.vue";
-import WarningIcon from "../atoms/icons/WarningIcon.vue";
+import Label from "@/components/atoms/text/Label.vue";
+import InputField from "@/components/atoms/inputs/InputField.vue";
+import EyeIcon from "@/components/atoms/icons/EyeIcon.vue";
+import ClosedEyeIcon from "@/components/atoms/icons/ClosedEyeIcon.vue";
+import WarningIcon from "@/components/atoms/icons/WarningIcon.vue";
 
 export default {
   name: "FormField",

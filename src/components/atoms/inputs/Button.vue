@@ -6,7 +6,7 @@
       { disabled: disabled || isLoading },
       buttonClass,
     ]"
-    @click="emitMethod"
+    @click="click"
   >
     <span v-if="!isLoading"> {{ label }} </span>
     <Loader v-else :color="'#fff'" :is-button="true" />
@@ -15,7 +15,7 @@
 
 <script>
 import { computed } from "vue";
-import Loader from "./Loader.vue";
+import Loader from "@/components/atoms/utils/Loader.vue";
 
 export default {
   name: "Button",
@@ -48,11 +48,11 @@ export default {
       default: false,
     },
   },
-  emits: ["emitMethod"],
+  emits: ["click"],
   setup(props, { emit }) {
     // METHODS
     const emitMethod = () => {
-      emit("emitMethod");
+      emit("click");
     };
 
     const colorMap = {
@@ -65,7 +65,7 @@ export default {
     // COMPUTED
     const buttonClass = computed(() => {
       const baseClasses =
-        "text-white font-bold py-2 px-4 rounded transition-all duration-400";
+        "flex justify-center align-center text-white font-bold py-2 px-4 rounded transition-all duration-400";
       const colorClasses = colorMap[props.color] || colorMap.default;
       const alertClasses = props.hasAlert ? "bg-red-500 hover:bg-red-700" : "";
       const disabledClasses =

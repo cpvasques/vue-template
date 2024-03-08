@@ -1,9 +1,12 @@
+import { ref } from "vue";
 import { useMutation } from "@tanstack/vue-query";
 import { login } from "@/services/loginService";
 import { useAuthStore } from "@/stores/auth";
 import router from "@/router";
 
 export function useLogin() {
+  const isLoading = ref(false);
+  const error = ref(null);
   const authStore = useAuthStore();
 
   //JWT DECODE
@@ -22,8 +25,12 @@ export function useLogin() {
   };
 
   // LOGIN REQUEST
-  const { mutate, isLoading, error } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: login,
+    onMutate: () => {
+      isLoading.value = true;
+      error.value = null;
+    },
     onSuccess: (data, variables) => {
       if (variables.stayConnected) {
         localStorage.setItem("token", data.token);
@@ -35,8 +42,11 @@ export function useLogin() {
       authStore.setAuthInfo({ token: data.token, userInfo });
       router.push({ name: "Home" });
     },
-    onError: (error) => {
-      console.log(error);
+    onError: (err) => {
+      error.value = err;
+    },
+    onSettled: () => {
+      isLoading.value = false;
     },
   });
 

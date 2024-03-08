@@ -35,9 +35,9 @@
             id="login-btn"
             type="submit"
             class="w-full sm:w-[83px]"
-            :disabled="hasRequiredFields || loginState.isLoading"
-            :is-loading="loginState.isLoading"
-            :label="loginState.isLoading ? '' : 'Entrar'"
+            :disabled="hasRequiredFields || isLoading"
+            :is-loading="isLoading"
+            :label="isLoading ? '' : 'Entrar'"
           />
         </div>
       </form>
@@ -52,14 +52,15 @@
 import { ref, computed, watch } from "vue";
 import { useLogin } from "@/composables/useLogin";
 
-import Card from "@/components/molecules/Card.vue";
+import Card from "@/components/molecules/common/Card.vue";
 import Header from "@/components/molecules/login/Header.vue";
-import FormField from "@/components/molecules/FormField.vue";
-import Button from "@/components/atoms/Button.vue";
-import Checkbox from "@/components/atoms/Checkbox.vue";
+import FormField from "@/components/molecules/common/FormField.vue";
+import Button from "@/components/atoms/inputs/Button.vue";
+import Checkbox from "@/components/atoms/inputs/Checkbox.vue";
 import Footer from "@/components/molecules/login/Footer.vue";
 
 export default {
+  name: "LoginForm",
   components: {
     Card,
     Header,
@@ -74,7 +75,7 @@ export default {
     const password = ref("");
     const rememberMe = ref(false);
     const showRequiredFields = ref(false);
-    const { doLogin, isLoading, error } = useLogin();
+    const { doLogin, isLoading } = useLogin();
 
     // COMPUTED
     const hasRequiredFields = computed(() => !email.value || !password.value);
@@ -98,19 +99,14 @@ export default {
       });
     };
 
-    const loginState = {
-      isLoading,
-      error,
-    };
-
     return {
       email,
       password,
       rememberMe,
       onSubmit,
       showRequiredFields,
-      loginState,
       hasRequiredFields,
+      isLoading,
     };
   },
 };

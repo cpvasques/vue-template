@@ -1,76 +1,78 @@
 <template>
-  <nav
-    :class="{
-      'w-60': isExpanded,
-      'w-16': isWeb && !isExpanded,
-      'w-0': !isWeb && !isExpanded,
-      'w-3/5': !isWeb && isExpanded,
-    }"
-    class="relative min-h-screen overflow-hidden overflow-visible bg-white shadow-xl transition-all duration-300 ease-in-out"
-  >
+  <nav :class="sidebarClasses">
     <div class="relative flex-grow pt-12">
       <ul>
-        <li v-for="route in navItems" :key="route.menuLabel" class="group">
-          <router-link
-            v-show="isWeb || isExpanded"
-            :to="route.path"
-            class="flex h-12 items-center rounded-br rounded-tr pl-4 text-gray-800 transition-all duration-200 hover:bg-gray-200"
-            :class="{
-              'justify-between': isExpanded,
-            }"
-            exact-active-class="bg-blue-500 text-white"
-          >
-            <span class="text-lg">
-              <SidebarIcons :nav-name="route.name" />
-            </span>
-            <span v-if="isExpanded" class="ml-4 flex-1">
-              {{ route.menuLabel }}
-            </span>
-          </router-link>
-        </li>
+        <NavItem
+          v-for="route in navItems"
+          :key="route.menuLabel"
+          :route="route"
+          :is-expanded="isExpanded"
+          :show-nav="isExpanded || isWebStore.isWeb"
+        />
       </ul>
 
-      <button
-        v-if="isWeb"
-        class="absolute -right-3 top-0 mt-2 transition-transform duration-300"
-        :class="{ 'rotate-180': isExpanded }"
+      <ToggleButton
+        v-if="isWebStore.isWeb"
+        :is-expanded="isExpanded"
         @click="toggleExpand"
       >
         <SidebarArrow />
-      </button>
+      </ToggleButton>
     </div>
   </nav>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { routes } from "@/router";
-import isWebMixin from "@/mixins/isWebMixin";
+import { useIsWebStore } from "@/stores/isWeb";
 import SidebarArrow from "@/components/atoms/icons/SidebarArrow.vue";
-import SidebarIcons from "@/components/molecules/SidebarIcons.vue";
+import NavItem from "@/components/molecules/common/NavItem.vue";
+import ToggleButton from "@/components/atoms/inputs/ToggleButton.vue";
 
 export default {
+  name: "Sidebar",
   components: {
     SidebarArrow,
-    SidebarIcons,
+    NavItem,
+    ToggleButton,
   },
-  mixins: [isWebMixin],
   setup() {
+    // DATA
     const isExpanded = ref(false);
     const navItems = ref([]);
+    const isWebStore = useIsWebStore();
 
-    onMounted(() => {
-      navItems.value = routes[0].children;
-    });
-
+    // METHODS
     const toggleExpand = () => {
       isExpanded.value = !isExpanded.value;
     };
+
+    // LIFE CYCLE
+    onMounted(() => {
+      isWebStore.initialize();
+      navItems.value = routes[0].children;
+    });
+
+    onUnmounted(() => {
+      isWebStore.destroy();
+    });
+
+    // COMPUTED
+    const sidebarClasses = computed(() => ({
+      "w-60": isExpanded.value,
+      "w-16": isWebStore.isWeb && !isExpanded.value,
+      "w-0": !isWebStore.isWeb && !isExpanded.value,
+      "w-3/5": !isWebStore.isWeb && isExpanded.value,
+      "relative min-h-screen overflow-hidden overflow-visible bg-white shadow-xl transition-all duration-300 ease-in-out": true,
+    }));
 
     return {
       isExpanded,
       navItems,
       toggleExpand,
+      sidebarClasses,
+      isWebStore,
     };
   },
 };
