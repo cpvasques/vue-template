@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Loader from "./Loader.vue";
+import Loader from "@/components/atoms/utils/Loader.vue";
 
 export default {
   name: "Button",

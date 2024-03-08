@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import SpinnerIcon from "./icons/SpinnerIcon.vue";
+import SpinnerIcon from "@/components/atoms/icons/SpinnerIcon.vue";
 
 export default {
   name: "Loader",

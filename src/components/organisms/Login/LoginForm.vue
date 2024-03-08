@@ -52,11 +52,11 @@
 import { mapState, mapActions } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 
-import Card from "@/components/molecules/Card.vue";
+import Card from "@/components/molecules/common/Card.vue";
 import Header from "@/components/molecules/login/Header.vue";
-import FormField from "@/components/molecules/FormField.vue";
-import Button from "@/components/atoms/Button.vue";
-import Checkbox from "@/components/atoms/Checkbox.vue";
+import FormField from "@/components/molecules/common/FormField.vue";
+import Button from "@/components/atoms/inputs/Button.vue";
+import Checkbox from "@/components/atoms/inputs/Checkbox.vue";
 import Footer from "@/components/molecules/login/Footer.vue";
 
 export default {
