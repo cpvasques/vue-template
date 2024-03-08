@@ -1,64 +1,58 @@
 <template>
-  <nav
-    :class="{
-      'w-60': isExpanded,
-      'w-16': isWeb && !isExpanded,
-      'w-0': !isWeb && !isExpanded,
-      'w-3/5': !isWeb && isExpanded,
-    }"
-    class="relative min-h-screen overflow-hidden overflow-visible bg-white shadow-xl transition-all duration-300 ease-in-out"
-  >
+  <nav :class="sidebarClasses">
     <div class="relative flex-grow pt-12">
       <ul>
-        <li v-for="route in navItems" :key="route.menuLabel" class="group">
-          <router-link
-            v-show="isWeb || isExpanded"
-            :to="route.path"
-            class="flex h-12 items-center rounded-br rounded-tr pl-4 text-gray-800 transition-all duration-200 hover:bg-gray-200"
-            :class="{
-              'justify-between': isExpanded,
-            }"
-            exact-active-class="bg-blue-500 text-white"
-          >
-            <span class="text-lg">
-              <SidebarIcons :nav-name="route.name" />
-            </span>
-            <span v-if="isExpanded" class="ml-4 flex-1">
-              {{ route.menuLabel }}
-            </span>
-          </router-link>
-        </li>
+        <NavItem
+          v-for="route in navItems"
+          :key="route.menuLabel"
+          :route="route"
+          :is-expanded="isExpanded"
+          :show-nav="isExpanded || isWeb"
+        />
       </ul>
 
-      <button
+      <ToggleButton
         v-if="isWeb"
-        class="absolute -right-3 top-0 mt-2 transition-transform duration-300"
-        :class="{ 'rotate-180': isExpanded }"
+        :is-expanded="isExpanded"
         @click="toggleExpand"
       >
         <SidebarArrow />
-      </button>
+      </ToggleButton>
     </div>
   </nav>
 </template>
+
 <script>
 import { routes } from "@/router";
 
 import isWebMixin from "@/mixins/isWebMixin";
+import NavItem from "@/components/molecules/common/NavItem.vue";
+import ToggleButton from "@/components/atoms/inputs/ToggleButton.vue";
 import SidebarArrow from "@/components/atoms/icons/SidebarArrow.vue";
-import SidebarIcons from "@/components/molecules/common/SidebarIcons.vue";
 
 export default {
   name: "Sidebar",
   components: {
+    NavItem,
+    ToggleButton,
     SidebarArrow,
-    SidebarIcons,
   },
   mixins: [isWebMixin],
   data: () => ({
     navItems: [],
     isExpanded: false,
   }),
+  computed: {
+    sidebarClasses() {
+      return {
+        "w-60": this.isExpanded,
+        "w-16": this.isWeb && !this.isExpanded,
+        "w-0": !this.isWeb && !this.isExpanded,
+        "w-3/5": !this.isWeb && this.isExpanded,
+        "relative min-h-screen overflow-hidden overflow-visible bg-white shadow-xl transition-all duration-300 ease-in-out": true,
+      };
+    },
+  },
   created() {
     this.navItems = routes[0].children;
   },

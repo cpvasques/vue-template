@@ -102,7 +102,7 @@ export default {
       this.loginRequest(body, this.rememberMe).then((res) => {
         const { status } = res;
 
-        if (status === 200) {
+        if (status === 201) {
           this.$router.push({
             name: "Home",
           });

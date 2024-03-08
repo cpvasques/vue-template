@@ -47,7 +47,7 @@ export default {
       default: false,
     },
   },
-  emits: ["emitMethod"],
+  emits: ["click"],
 
   computed: {
     buttonClass() {
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     emitMethod() {
-      this.$emit("emitMethod");
+      this.$emit("click");
     },
   },
 };
