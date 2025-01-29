@@ -8,7 +8,7 @@ const emit = defineEmits<{
 
 <template>
   <button
-    class="absolute cursor-pointer -right-3 top-3 mt-2 transition-transform duration-300 border border-blue-500 rounded-full p-1 bg-blue-500"
+    class="absolute top-3 -right-3 mt-2 cursor-pointer rounded-full border border-blue-500 bg-blue-500 p-1 transition-transform duration-300"
     :class="{ 'rotate-180': isExpanded }"
     @click="emit('click')"
   >

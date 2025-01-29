@@ -33,7 +33,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-12 gap-5 justify-end items-center" @submit.prevent="onSubmit">
+  <form class="grid grid-cols-12 items-center justify-end gap-5" @submit.prevent="onSubmit">
     <FormField v-slot="{ componentField, errors }" name="email">
       <FormItem class="col-span-12">
         <FormLabel>Email</FormLabel>

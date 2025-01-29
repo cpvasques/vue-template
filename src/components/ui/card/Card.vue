@@ -12,7 +12,7 @@ const props = defineProps<{
   <div
     :class="
       cn(
-        ' bg-white shadow-2xl transition-all duration-300 ease-in-out rounded-lg border-gray-300 bg-card text-black',
+        'bg-card rounded-lg border-gray-300 bg-white text-black shadow-2xl transition-all duration-300 ease-in-out',
         props.class,
       )
     "

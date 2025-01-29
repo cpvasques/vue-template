@@ -5,12 +5,12 @@ import AuthTemplate from '@/layouts/Auth.vue'
 
 <template>
   <AuthTemplate>
-    <Card class="w-full md:w-1/2 h-screen md:min-h-[26rem] md:h-auto bg-white">
+    <Card class="h-screen w-full bg-white md:h-auto md:min-h-[26rem] md:w-1/2">
       <CardHeader>
-        <CardTitle class="text-2xl font-semibold text-black text-center">
+        <CardTitle class="text-center text-2xl font-semibold text-black">
           Nome da Plataforma
         </CardTitle>
-        <CardDescription class="text-center mt-5"> Descrição da Plataforma </CardDescription>
+        <CardDescription class="mt-5 text-center"> Descrição da Plataforma </CardDescription>
       </CardHeader>
 
       <CardContent class="space-y-4">

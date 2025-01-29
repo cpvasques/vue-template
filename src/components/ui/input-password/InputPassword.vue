@@ -37,7 +37,7 @@ const togglePasswordVisibility = () => {
       :disabled="disabled"
       :class="
         cn(
-          'flex h-10 w-full rounded-sm border border-input bg-white px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-base file:font-medium placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          'border-input ring-offset-background placeholder:text-muted-foreground flex h-10 w-full rounded-sm border bg-white px-3 py-2 text-base file:border-0 file:bg-transparent file:text-base file:font-medium focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
           props.hasError && 'border-red-700',
         )
       "
@@ -45,7 +45,7 @@ const togglePasswordVisibility = () => {
     />
     <button
       type="button"
-      class="absolute right-0 top-0 h-full cursor-pointer px-3 py-2 hover:bg-transparent"
+      class="absolute top-0 right-0 h-full cursor-pointer px-3 py-2 hover:bg-transparent"
       :disabled="isDisabled"
       @click="togglePasswordVisibility"
     >
