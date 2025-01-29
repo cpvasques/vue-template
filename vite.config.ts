@@ -18,7 +18,7 @@ export default defineConfig({
     Components({
       dts: true,
     }),
-    AutoImport({ imports: ['vue', '@vueuse/core', 'vee-validate'] }),
+    AutoImport({ imports: ['vue', '@vueuse/core', 'vee-validate', 'vue-router'] }),
   ],
   server: {
     host: true,

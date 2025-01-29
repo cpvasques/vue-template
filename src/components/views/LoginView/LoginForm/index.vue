@@ -1,24 +1,30 @@
 <script setup lang="ts">
 import { useForm } from 'vee-validate'
+import { useRouter } from 'vue-router'
 
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form/index.ts'
-import { formSchema } from '@/composables/auth/useAuth.schemas.ts'
-import { useAuth } from '@/composables/auth/useAuth.ts'
+import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form/index'
+import { useAuth } from '@/composables/auth/useAuth'
+import { formSchema } from '@/composables/auth/useAuth.schemas'
+import type { Params } from '@/services/auth/postLogin.types'
 
+const router = useRouter()
 const { postLogin } = useAuth()
 const { mutate: postLoginMutate, isPending: isLoadingLogin } = postLogin()
 
 const { handleSubmit } = useForm({
   validationSchema: formSchema,
   validateOnMount: false,
-  validateOnChange: false,
-  validateOnInput: false,
 })
 
 const onSubmit = handleSubmit((values) => {
-  postLoginMutate(values, {
-    onSuccess(resp) {
-      if (!resp) return
+  const loginPayload: Params = {
+    email: values.email || '',
+    password: values.password || '',
+  }
+
+  postLoginMutate(loginPayload, {
+    onSuccess(res) {
+      if (!res) return
 
       router.push('/')
     },
@@ -57,7 +63,8 @@ const onSubmit = handleSubmit((values) => {
       class="col-span-12 md:col-span-4 md:col-start-9"
       type="submit"
       :is-loading="isLoadingLogin"
-      >Entrar</Button
     >
+      Entrar
+    </Button>
   </form>
 </template>
