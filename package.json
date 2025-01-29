@@ -13,7 +13,7 @@
     "lint:check": "npm run lint:eslint && npm run lint:prettier",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier . --check",
-    "lintfix": "eslint . --fix && prettier --write --list-different .",
+    "lint:fix": "eslint . --fix && prettier --write --list-different .",
     "format": "prettier --write src/"
   },
   "husky": {

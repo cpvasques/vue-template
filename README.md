@@ -44,7 +44,7 @@ Antes de realizar um commit ou um push, é importante executar os seguintes coma
 ```
 
 ```sh
-  npm run lint:format
+  npm run lint:fix
 ```
 
 ## 🌐 Links úteis
