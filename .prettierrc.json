@@ -1,9 +1,7 @@
 {
-  "arrowParens": "always",
-  "semi": true,
-  "singleQuote": false,
-  "tabWidth": 2,
-  "useTabs": false,
-  "printWidth": 80,
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi": false,
+  "singleQuote": true,
+  "printWidth": 100,
+  "endOfLine": "auto"
 }

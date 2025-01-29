@@ -7,6 +7,7 @@
 - [Vue Router](https://router.vuejs.org/)
 - [Pinia](https://pinia.vuejs.org/)
 - [Tailwind](https://tailwindcss.com/docs/installation)
+- [Tanstack](https://tanstack.com/query/v5/docs/framework/vue/overview)
 
 ## Requisitos
 
