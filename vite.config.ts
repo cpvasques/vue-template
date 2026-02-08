@@ -1,6 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -14,12 +13,18 @@ export default defineConfig({
     vue(),
     vueJsx(),
     vueDevTools(),
-    tailwindcss(),
     Components({
       dts: true,
     }),
-    AutoImport({ imports: ['vue', '@vueuse/core', 'vee-validate', 'vue-router'] }),
+    AutoImport({
+      imports: ['vue', '@vueuse/core', 'vee-validate', 'vue-router'],
+      dts: 'src/auto-imports.d.ts',
+      vueTemplate: true,
+    }),
   ],
+  css: {
+    postcss: './postcss.config.js',
+  },
   server: {
     host: true,
     port: 8080,

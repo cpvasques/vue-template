@@ -125,3 +125,5 @@ logs
 .env
 .env.*
 !.env.example
+
+public/mockServiceWorker.js

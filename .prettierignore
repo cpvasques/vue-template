@@ -2,3 +2,5 @@
 package.json
 package-lock.json
 public
+src/auto-imports.d.ts
+playwright

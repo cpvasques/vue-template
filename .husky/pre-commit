@@ -1,8 +1,11 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "Executando yarn run lint:check..."
-echo "Em caso de erros ou warnings, rode o comando yarn run lintfix e corrija a lista abaixo antes de realizar o commit."
+echo "Executando Prettier..."
+npm run format
 
-yarn run lint:check
+echo "Executando npm run lint:check..."
+echo "Em caso de erros ou warnings, rode o comando npm run lint:fix e corrija a lista abaixo antes de realizar o commit."
+
+npm run lint:check
 

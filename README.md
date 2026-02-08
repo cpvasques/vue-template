@@ -7,7 +7,9 @@
 - [Vue Router](https://router.vuejs.org/)
 - [Pinia](https://pinia.vuejs.org/)
 - [Tailwind](https://tailwindcss.com/docs/installation)
+- [VeeValidate](https://vee-validate.logaretm.com/v4/)
 - [Tanstack](https://tanstack.com/query/v5/docs/framework/vue/overview)
+- [Lucide](https://lucide.dev/icons/)
 
 ## Requisitos
 
@@ -45,6 +47,44 @@ Antes de realizar um commit ou um push, é importante executar os seguintes coma
 
 ```sh
   npm run lint:fix
+```
+
+### Sobre API MOCK
+
+Para utilizar a feramenta de mock precisamos de dois passos
+1 - Ativar no .env a variavel responsavel por adicionar ao setup do app o serviceworker do MSW
+
+```sh
+VITE_ENABLE_MOCK_SERVER=true
+```
+
+2 - Gerar o arquivo mockServiceWorker.js na pasta publica com o comando abaixo
+
+```sh
+npx msw init public
+```
+
+Após esses dois passos ao rodar a aplicação as requests declaradas em handlers.ts serão interceptadas
+
+### Sobre os testes
+
+Para utilizar a feramenta de testes automatizados playwright podemos executar um dos dois comandos abaixo:
+Ex. sem ui
+
+```sh
+npx playwright test
+```
+
+Ex. com ui
+
+```sh
+npx playwright test --ui
+```
+
+Caso queira gerar o codigo de testes com a ferramenta codegen utilize o comando abaixo e em seguida copie o conteudo do console aberto em um arquivo de testes (nome_do_teste.spec.ts) na pasta playwright.
+
+```sh
+npx playwright codegen
 ```
 
 ## 🌐 Links úteis

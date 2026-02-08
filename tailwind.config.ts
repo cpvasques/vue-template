@@ -1,8 +1,7 @@
-import animate from 'tailwindcss-animate'
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -40,10 +39,14 @@ export default {
           foreground: 'hsl(var(--card-foreground))',
         },
       },
-    },
-    screens: {
-      sm: '992px',
+      screens: {
+        xs: '640px',
+        sm: '992px',
+        md: '1280px',
+        lg: '1920px',
+        xl: '2560px',
+        xxl: '3840px',
+      },
     },
   },
-  plugins: [animate],
 }

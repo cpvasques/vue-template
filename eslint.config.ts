@@ -1,5 +1,8 @@
 import pluginVitest from '@vitest/eslint-plugin'
-import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
+import {
+  defineConfigWithVueTs,
+  vueTsConfigs,
+} from '@vue/eslint-config-typescript'
 import pluginPrettier from 'eslint-plugin-prettier'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import pluginVue from 'eslint-plugin-vue'
@@ -12,7 +15,15 @@ export default defineConfigWithVueTs(
 
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+    ignores: [
+      '**/dist/**',
+      '**/dist-ssr/**',
+      '**/coverage/**',
+      '**/public/**',
+      '**/playwright/**',
+      '**/playwright-report/**',
+      'playwright.config.ts',
+    ],
   },
 
   pluginVue.configs['flat/essential'],
@@ -21,11 +32,17 @@ export default defineConfigWithVueTs(
   {
     ...pluginVitest.configs.recommended,
     files: ['src/**/__tests__/*'],
+    rules: {
+      'vitest/no-conditional-expect': 'off',
+    },
   },
 
   {
     name: 'prettier-integration',
-    plugins: { prettier: pluginPrettier, 'simple-import-sort': simpleImportSort },
+    plugins: {
+      prettier: pluginPrettier,
+      'simple-import-sort': simpleImportSort,
+    },
     rules: {
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
       'linebreak-style': 0,
@@ -35,6 +52,7 @@ export default defineConfigWithVueTs(
       'vue/no-multiple-template-root': 'off',
       'simple-import-sort/imports': 'error',
       '@typescript-eslint/no-explicit-any': 'off',
+      'tailwindcss/classnames-order': 'off',
     },
   },
 )

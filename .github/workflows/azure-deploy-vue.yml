@@ -1,0 +1,61 @@
+name: CD (Storage Account + FrontDoor)
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.11
+          cache: 'npm'
+
+      - name: 'Installing dependencies'
+        run: npm install
+
+      - name: Building assets - dev
+        if: github.ref == 'refs/heads/dev'
+        env:
+          VITE_APP_BASE_URL: ${{ vars.VITE_APP_BASE_URL_DEV }}
+        run: npm run build
+
+      - name: 'Auth to Azure'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload to blob storage - dev
+        if: github.ref == 'refs/heads/dev'
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch --account-name ${{ vars.AZ_STORAGE_ACCOUNT_NAME_DEV }} --auth-mode key --destination '$web' --source dist --overwrite true
+
+      #  - name: Purge CDN cache - dev
+      #    if: github.ref == 'refs/heads/dev'
+      #    env:
+      #      RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP_DEV }}
+      #      FRONT_DOOR_NAME: ${{ vars.FRONT_DOOR_NAME_DEV }}
+      #      FRONT_DOOR_ENDPOINT: ${{ vars.FRONT_DOOR_ENDPOINT_DEV }}
+      #      FRONT_DOOR_DOMAINS: ${{ vars.FRONT_DOOR_DOMAINS_DEV }}
+      # #   uses: azure/cli@v2
+      #  #  with:
+      #      azcliversion: latest
+      #      inlineScript: |
+      #        az afd endpoint purge --resource-group $RESOURCE_GROUP --profile-name $FRONT_DOOR_NAME --endpoint-name $FRONT_DOOR_ENDPOINT --domains $FRONT_DOOR_DOMAINS --content-paths "/*" --no-wait
+
+      # Azure logout
+      - name: logout
+        run: |
+          az logout
+        if: always()

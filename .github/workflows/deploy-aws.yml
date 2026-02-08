@@ -1,0 +1,71 @@
+name: CD (S3 + CloudFront)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Build and Deploy to S3 + CloudFront
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: 'Installing dependencies'
+        run: npm install
+
+      - name: Setting environment variables and building assets - dev
+        if: github.ref == 'refs/heads/dev'
+        env:
+          VITE_APP_BASE_URL: ${{ vars.VITE_APP_BASE_URL_DEV }}
+        run: npm run build
+
+      - name: Setting environment variables and building assets - prod
+        if: github.ref == 'refs/heads/main'
+        env:
+          VITE_APP_BASE_URL: ${{ vars.VITE_APP_BASE_URL }}
+        run: npm run build
+
+      - name: Push to dev environment
+        if: github.ref == 'refs/heads/dev'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID_DEV }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: ./dist
+          bucket: ${{ vars.AWS_BUCKET_DEV }}
+          bucket-region: us-east-1
+          dist-id: ${{ vars.AWS_CDN_DISTRIBUTION_ID_DEV }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
+          filesToInclude: '.*/*,*/*,**'
+
+      - name: Push to prod environment
+        if: github.ref == 'refs/heads/main'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: ./dist
+          bucket: ${{ vars.AWS_BUCKET_PROD }}
+          bucket-region: us-east-1
+          dist-id: ${{ vars.AWS_CDN_DISTRIBUTION_ID_PROD }}
+          invalidation: /
+          delete-removed: true
+          no-cache: true
+          private: true
+          filesToInclude: '.*/*,*/*,**'
