@@ -20,7 +20,10 @@ Este é um template Vue.js 3 utilizando TypeScript, seguindo a arquitetura **Fea
 - **shadcn-vue** - Componentes UI estilizados (em `src/shared/components/`)
 - **Reka UI** - Componentes primitivos base (acessibilidade)
 - **Lucide Vue Next** - Biblioteca de ícones
+- **@phosphor-icons/vue** - Biblioteca de ícones alternativa
 - **Vue Sonner** - Notificações toast
+- **class-variance-authority** - Variantes de componentes
+- **tw-animate-css + tailwind-animate** - Animações CSS
 
 ### Validação & Formulários
 - **VeeValidate 4.15.1** - Validação de formulários
@@ -30,19 +33,25 @@ Este é um template Vue.js 3 utilizando TypeScript, seguindo a arquitetura **Fea
 
 ### Data Fetching
 - **@tanstack/vue-query 5.92.1** - Gerenciamento de estado servidor
+- **@tanstack/vue-table 8.21.3** - Tabelas com sorting/filtering
 - **Axios 1.13.2** - Cliente HTTP (padrão)
 - **Fetch API** - Cliente HTTP alternativo (adapter disponível)
 
 ### Utilitários
 - **@vueuse/core** - Composables utilitários Vue
 - **date-fns** - Manipulação de datas
+- **date-fns-tz** - Timezone para date-fns
 - **lodash** - Utilitários JavaScript
 - **maska** - Máscaras de input
 - **clsx + tailwind-merge** - Merge de classes CSS
 
+### Dev Tools
+- **vite-plugin-vue-devtools** - DevTools Vue no navegador
+- **@tanstack/vue-query-devtools** - DevTools Vue Query
+
 ### Testes
-- **Vitest** - Testes unitários
-- **Playwright** - Testes E2E
+- **Vitest 4.0.16** - Testes unitários
+- **Playwright 1.57.0** - Testes E2E
 - **MSW 2.12.4** - Mock Service Worker para mocks de API
 
 ## 🏗 Arquitetura do Projeto
@@ -52,6 +61,7 @@ O projeto segue uma arquitetura baseada em **Feature-Sliced Design (FSD)** com a
 ```
 src/
 ├── app/              # Configuração e inicialização da aplicação
+├── lib/              # Utilitários compartilhados (cn, etc.)
 ├── pages/            # Páginas/rotas da aplicação
 ├── features/         # Features de negócio (lógica específica)
 ├── widgets/          # Componentes compostos reutilizáveis
@@ -62,19 +72,30 @@ src/
 
 #### `app/` - Core da Aplicação
 - **`main.ts`** - Ponto de entrada, inicialização de plugins
-- **`providers/`** - Providers (router, etc)
-- **`middlewares/`** - Middlewares de roteamento
-- **`plugins/`** - Plugins Vue (Pinia, VueQuery, i18n, Maska)
-- **`api/`** - Adaptadores HTTP (axios-adapter, fetch-adapter)
-- **`utils/`** - Utilitários globais
+- **`providers/router/`** - Configuração de rotas
+- **`middlewares/`** - Middlewares de roteamento (requireAuth, keepConnected)
+- **`plugins/`** - Plugins Vue (Pinia, VueQuery, i18n-zod, Maska)
+- **`api/`** - Adaptadores HTTP (axios-adapter, fetch-adapter, types)
+- **`utils/`** - Utilitários globais (cn, decodeJwt, passwordRegex, getParentBackgroundColor)
+
+#### `lib/` - Utilitários compartilhados
+- **`utils.ts`** - Função `cn()` para merge de classes (padrão shadcn-vue)
+- Usado por `shared/components/`; `app/utils/cn.ts` ainda existe e é usado por alguns widgets
 
 #### `pages/` - Páginas/Rotas
-Componentes de página que compõem as rotas. Importam features e widgets.
+Componentes de página que compõem as rotas. Importam features e widgets. Organizados em subpastas por domínio.
+
+**Estrutura:**
+```
+pages/
+├── login/            # LoginView, RecoverPasswordView, 2FAView, NewPasswordView
+├── users/            # UsersView
+└── profile/          # ProfileView
+```
 
 **Padrão:**
 - Cada página corresponde a uma rota
 - Nomenclatura: `[Nome]View.vue`
-- Exemplos: `LoginView.vue`, `UsersView.vue`, `ProfileView.vue`
 
 #### `features/` - Features de Negócio
 Lógica de negócio específica, organizada por domínio.
@@ -96,7 +117,12 @@ features/
 
 **Exemplos:**
 - `auth/login-auth/` - Feature de login
-- `users/handle-users/` - Feature de gerenciamento de usuários
+- `auth/2fa-auth/` - Autenticação 2FA
+- `auth/recover-password-auth/` - Recuperação de senha
+- `auth/new-password-auth/` - Nova senha
+- `users/handle-users/` - Feature de criar/editar usuários
+- `users/list-users/` - Feature de listagem de usuários
+- `users/delete-users/` - Feature de exclusão de usuários
 - `profile/update-profile/` - Feature de atualização de perfil
 
 #### `widgets/` - Componentes Compostos
@@ -117,19 +143,33 @@ widgets/
 - `pagination/` - Componente de paginação
 - `page-title/` - Título de página com ações
 
-**Loader full-screen:** `shared/ui/page-loader/` (componente genérico)
-
 #### `shared/` - Código Compartilhado
 - **`api/`** - Chamadas de API organizadas por domínio
-  - `auth-api/` - APIs de autenticação
-  - `users-api/` - APIs de usuários
-  - `profile-api/` - APIs de perfil
-  - `config/` - Configuração HTTP (client, interceptors)
-- **`ui/`** - Componentes UI reutilizáveis
-  - `layouts/` - Layouts (Auth.vue, Default.vue)
-  - `assets/` - Assets (imagens, estilos)
-- **`store/`** - Stores globais (theme, etc)
-- **`mocks/`** - Handlers MSW para mock de API
+  - `auth-api/` - postLogin, postTwoFactor, postRecover, postNewPassword, postResendCode
+  - `users-api/` - getAllUsers, getUserById, postNewUser, updateUser, deleteUser
+  - `profile-api/` - postNewPhoto
+  - `config/` - http-client.ts, interceptors (handleBearer, handleUnauthorized)
+- **`components/`** - Primitivos UI (shadcn-vue) - ~50 componentes
+  - accordion, alert, alert-dialog, autocomplete, avatar, badge, breadcrumb, button, calendar, card, carousel, checkbox, collapsible, collapsible-sidebar, command, context-menu, data-table, date-picker, dialog, drawer, dropdown-menu, events-calendar, file-input, form, hover-card, input, input-file, input-password, label, menubar, month-picker, multi-select, navigation-menu, number-field, pagination, pin-input, popover, progress, radio-group, range-calendar, range-date-picker, resizable, scroll-area, select, separator, sheet, skeleton, slider, sonner, stepper, switch, table, table-loader, tabs, tags-input, textarea, theme-toggle, toast, toggle, toggle-group, tooltip
+- **`ui/`** - Assets, layouts base, ícones e loaders
+  - `assets/` - images, styles/tailwind.css
+  - `icons/` - AppLogo.vue
+  - `layouts/` - Auth.vue, Default.vue
+  - `page-loader/` - Loader full-screen genérico
+- **`store/`** - Stores globais (theme.ts)
+- **`mocks/`** - Handlers MSW (browser.ts, handlers.ts)
+
+**Convenção shared/ui vs shared/components:**
+| Pasta | Uso | Exemplos |
+|-------|-----|----------|
+| `shared/components/` | Primitivos UI reutilizáveis (shadcn-vue) | Button, Input, Dialog, Table, Skeleton |
+| `shared/ui/` | Assets, layouts base, ícones | tailwind.css, AppLogo.vue, Auth.vue, Default.vue |
+
+**Convenção sidebar (não confundir):**
+| Import | Descrição |
+|--------|-----------|
+| `@/shared/components/collapsible-sidebar` | Componente shadcn de painel colapsável |
+| `@/widgets/sidebar` | Menu de navegação lateral da aplicação |
 
 ## 🔄 Fluxos Principais
 
@@ -198,7 +238,9 @@ export function useLogin() {
 
 ### Chamadas de API
 
-**Padrão com Axios:**
+**HTTP Client:** `shared/api/config/http-client.ts` exporta `axiosClient` (padrão) e `fetchClient`. Ambos implementam a interface `HttpClient` dos adapters em `app/api/`.
+
+**Padrão com axiosClient:**
 ```typescript
 import { axiosClient } from '../config/http-client'
 import type { Payload, Response } from './types/postLogin.types'
@@ -212,6 +254,8 @@ export async function postLogin(payload: Payload): Promise<Response> {
   return response.data
 }
 ```
+
+**Adaptadores:** `app/api/axios-adapter.ts` e `app/api/fetch-adapter.ts` implementam a mesma interface, permitindo trocar o cliente HTTP sem alterar as chamadas de API.
 
 **Tipos sempre em arquivo separado:**
 ```typescript
@@ -271,27 +315,22 @@ export const useAuthStore = defineStore('auth', {
 
 ### Rotas
 
-**Estrutura de rotas:**
+**Estrutura de rotas:** `app/providers/router/index.ts`
+
 ```typescript
-export const routes: RouteRecordRaw[] = [
-  {
-    path: '/',
-    component: DefaultTemplate,
-    beforeEnter: requireAuth,
-    children: [
-      {
-        path: '/users',
-        name: 'Users',
-        meta: { render: true, menuLabel: 'Users' },
-        component: () => import('@/pages/users/UsersView.vue'),
-      },
-    ],
-  },
-]
+// Rotas protegidas (DefaultTemplate + requireAuth)
+{ path: '/users', name: 'Users', meta: { render: true, menuLabel: 'Users' } }
+{ path: '/profile', name: 'Profile', meta: { render: false, menuLabel: 'Profile' } }
+
+// Rotas de auth (AuthTemplate)
+{ path: '/auth/login', name: 'Login', beforeEnter: keepConnected }
+{ path: '/auth/recover-password', name: 'RecoverPassword' }
+{ path: '/auth/two-factor-auth', name: 'TwoFactorAuth' }
+{ path: '/auth/new-password', name: 'NewPassword' }
 ```
 
 **Meta propriedades:**
-- `render: boolean` - Se deve aparecer no menu
+- `render: boolean` - Se deve aparecer no menu lateral
 - `menuLabel: string` - Label no menu
 
 ## 🎨 Estilização
@@ -303,9 +342,12 @@ export const routes: RouteRecordRaw[] = [
 - Suporte a dark mode via classes `dark:`
 
 ### Utilitário `cn()`
-Função helper para merge de classes:
+Função helper para merge de classes (clsx + tailwind-merge). Dois locais:
+- **`@/lib/utils`** - Padrão shadcn-vue, usado por `shared/components/`
+- **`@/app/utils/cn`** - Usado por alguns widgets (sidebar, pagination)
+
 ```typescript
-import { cn } from '@/app/utils/cn'
+import { cn } from '@/lib/utils'
 
 const classes = cn('base-class', condition && 'conditional-class')
 ```
@@ -407,9 +449,9 @@ Husky configurado para:
    - Interceptors usam `token`
    - Verificar qual é o padrão correto
 
-2. **Middlewares comentados:**
-   - `requireAuth` e `keepConnected` têm lógica comentada
-   - Autenticação está desabilitada para desenvolvimento
+2. **Middlewares:**
+   - `requireAuth` e `keepConnected` protegem rotas
+   - Verificar se lógica está ativa em `app/middlewares/`
 
 3. **Componentes UI:**
    - shadcn-vue: https://www.shadcn-vue.com/docs/components
@@ -417,8 +459,22 @@ Husky configurado para:
    - Componentes em `src/shared/components/`
 
 4. **Mock Server:**
-   - MSW configurado mas precisa gerar `mockServiceWorker.js`
-   - Comando: `npx msw init public`
+   - MSW ativado via `VITE_ENABLE_MOCK_SERVER=true`
+   - Inicialização em `main.ts` importa `shared/mocks/browser.ts`
+   - Gerar worker: `npx msw init public`
+
+5. **Utilitário cn():**
+   - Preferir `@/lib/utils` (padrão shadcn) para novos componentes em shared
+   - `@/app/utils/cn` ainda usado por widgets legados
+
+## 📁 Documentação Cursor (.cursor/)
+
+O projeto inclui regras e skills para assistentes:
+
+- **`.cursor/rules/`** - architecture-core-principles, api-development, error-handling, typescript-patterns, complexity-analysis
+- **`.cursor/skills/`** - vue3-fsd-development, vue3-forms-validation, vue3-testing, component-composition, ui-components, tailwind-patterns
+
+Consultar `architecture-core-principles.md` e `vue3-fsd-development/architecture.md` para decisões arquiteturais detalhadas.
 
 ## 📚 Documentações de Referência
 
